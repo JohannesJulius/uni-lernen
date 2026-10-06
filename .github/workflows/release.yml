@@ -1,0 +1,46 @@
+name: App bauen und veröffentlichen
+
+# Neue Version veröffentlichen:  git tag v1.1 && git push origin v1.1
+# Ohne Tag: Workflow im Reiter „Actions" manuell starten → Ergebnis als Artefakt.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: App bauen (Universal: Apple Silicon + Intel)
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          [[ "$GITHUB_REF_TYPE" == "tag" ]] || VERSION="0.0-dev"
+          export VERSION
+          ./build_app.sh dist
+          cd dist && ditto -c -k --sequesterRsrc --keepParent "Uni Lernen.app" "Uni-Lernen-macOS.zip"
+
+      - name: Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Uni-Lernen-macOS
+          path: dist/Uni-Lernen-macOS.zip
+
+      - name: Release erstellen
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/Uni-Lernen-macOS.zip
+          generate_release_notes: true

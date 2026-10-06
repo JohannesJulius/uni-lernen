@@ -1,0 +1,10 @@
+[
+  {"id":"mathe1","name":"Mathe 1","long":"Ingenieurmathematik 1 – Grundlagen, Lineare Algebra, Analysis","folders":["Mathe 1","Mathe 1 + 2 neu"],"color":"#3b6fd8","icon":"∑"},
+  {"id":"tm1","name":"TM 1 – Statik","long":"Technische Mechanik 1: Statik starrer Körper","folders":["Technische Mechanik 1"],"color":"#d9822b","icon":"⚖"},
+  {"id":"et","name":"Elektrotechnik","long":"Grundlagen der Elektrotechnik: Felder, Gleich-, Wechsel-, Drehstrom","folders":["Elektrotechnik"],"color":"#c9a227","icon":"⚡"},
+  {"id":"sf","name":"Spanlose Fertigung","long":"Gießen & Schweißen – Platz für deine Unterlagen","folders":["Spanlose Fertigung"],"color":"#8a5a44","icon":"🔥","placeholder":true},
+  {"id":"tm2","name":"TM 2 – Elastostatik","long":"Technische Mechanik 2: Festigkeitslehre","folders":["Technische Mechanik 2"],"color":"#c2452d","icon":"⌇"},
+  {"id":"lf","name":"Bauelemente der Luftfahrzeuge","long":"Bauelemente I (Sperl) – Normen, Zulassung, Lasten, Niete, Niet-/Bolzenfelder, Augen, Schrauben, Lebensdauer","folders":["Bauelemente der Luftfahrzeuge"],"color":"#2f8f83","icon":"✈"},
+  {"id":"num","name":"Numerik","long":"Numerische Methoden mit MATLAB & Simulink","folders":["Numerik"],"color":"#7a4fc4","icon":"⌗"},
+  {"id":"mathe2","name":"Mathe 2","long":"Ingenieurmathematik 2 – nach dem Skript Mathematik 1&2 (Möller)","folders":["Mathe 1 + 2 neu","Mathe 2"],"color":"#2d7fb8","icon":"∫"}
+]

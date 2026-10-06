@@ -1,0 +1,16 @@
+{
+  "name": "uni-lernen",
+  "version": "1.0.0",
+  "description": "Uni Lernen – macOS-Lern-App (Mathe, TM, ET, Numerik, Bauelemente) mit Lernplan und Karteikarten",
+  "scripts": {
+    "build": "node build.mjs",
+    "app": "./build_app.sh dist"
+  },
+  "author": "",
+  "type": "commonjs",
+  "dependencies": {
+    "katex": "^0.19.0",
+    "marked": "^18.0.14"
+  },
+  "private": true
+}

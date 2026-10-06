@@ -1,0 +1,458 @@
+[
+ {
+  "start": "2026-10-12",
+  "end": "2026-12-31",
+  "weeks": [
+   {
+    "n": 1,
+    "from": "2026-10-12",
+    "to": "2026-10-18",
+    "phase": "Mathe-Fundament & Statik",
+    "haupt": "mathe1",
+    "neben": "tm1",
+    "note": "Start! Pro Fach ein Karteikarten-Deck (in der App eingebaut). Täglich zuerst die fälligen Karteikarten."
+   },
+   {
+    "n": 2,
+    "from": "2026-10-19",
+    "to": "2026-10-25",
+    "phase": "Mathe-Fundament & Statik",
+    "haupt": "mathe1",
+    "neben": "tm1"
+   },
+   {
+    "n": 3,
+    "from": "2026-10-26",
+    "to": "2026-11-01",
+    "phase": "Mathe-Fundament & Statik",
+    "haupt": "mathe1",
+    "neben": "tm1",
+    "note": "Analysis-Block: Folgen, Reihen, Differenzierbarkeit – die dichteste Mathe-1-Woche."
+   },
+   {
+    "n": 4,
+    "from": "2026-11-02",
+    "to": "2026-11-08",
+    "phase": "Mathe-Fundament & Statik",
+    "haupt": "mathe1",
+    "neben": "tm1",
+    "note": "Mathe 1 und TM 1 werden abgeschlossen."
+   },
+   {
+    "n": 5,
+    "from": "2026-11-09",
+    "to": "2026-11-15",
+    "phase": "Elektrotechnik & Fertigung",
+    "haupt": "et",
+    "neben": "sf",
+    "note": "Elektrotechnik startet. Spanlose Fertigung: Inhalte sind noch Platzhalter – sobald dein Skript im Ordner liegt, werden daraus Lektionen."
+   },
+   {
+    "n": 6,
+    "from": "2026-11-16",
+    "to": "2026-11-22",
+    "phase": "Elektrotechnik & Bauelemente",
+    "haupt": "et",
+    "neben": "lf",
+    "note": "Elektrotechnik wird abgeschlossen, Bauelemente der Luftfahrzeuge startet (Normen, Lasten, Niete)."
+   },
+   {
+    "n": 7,
+    "from": "2026-11-23",
+    "to": "2026-11-29",
+    "phase": "Elastostatik & Bauelemente",
+    "haupt": "tm2",
+    "neben": "lf",
+    "note": "TM 2 startet. Bauelemente: Niet- und Bolzenfelder (nutzt Statik aus TM 1), Augenverbindungen, Gewinde."
+   },
+   {
+    "n": 8,
+    "from": "2026-11-30",
+    "to": "2026-12-06",
+    "phase": "Elastostatik & Bauelemente",
+    "haupt": "tm2",
+    "neben": "lf",
+    "note": "Biegung ist das größte Kapitel der Elastostatik. Bauelemente: Schraubenberechnung und Lebensdauer – danach ist Bauelemente komplett."
+   },
+   {
+    "n": 9,
+    "from": "2026-12-07",
+    "to": "2026-12-13",
+    "phase": "Elastostatik & Numerik",
+    "haupt": "tm2",
+    "neben": "num",
+    "note": "TM 2 wird abgeschlossen, Numerik startet."
+   },
+   {
+    "n": 10,
+    "from": "2026-12-14",
+    "to": "2026-12-20",
+    "phase": "Numerik & Mathe-2-Start",
+    "haupt": "num",
+    "neben": "mathe2",
+    "note": "Numerik wird abgeschlossen, Mathe 2 startet parallel."
+   },
+   {
+    "n": 11,
+    "from": "2026-12-21",
+    "to": "2026-12-27",
+    "phase": "Finale Mathe 2",
+    "haupt": "mathe2",
+    "neben": null,
+    "note": "Nur Mo–Mi (21.–23.12.), 24.–27.12. frei."
+   },
+   {
+    "n": 12,
+    "from": "2026-12-28",
+    "to": "2026-12-31",
+    "phase": "Finale Mathe 2",
+    "haupt": "mathe2",
+    "neben": null,
+    "note": "28.–30.12. letzte Mathe-2-Lektionen (DGL), 31.12. Rückblick über alle Fächer mit den Karteikarten."
+   }
+  ],
+  "id": "voll",
+  "name": "Vollplan – alle Fächer",
+  "short": "Vollplan",
+  "subjects": [
+   "mathe1",
+   "tm1",
+   "et",
+   "sf",
+   "tm2",
+   "lf",
+   "num",
+   "mathe2"
+  ],
+  "alloc": {
+   "mathe1": [
+    [
+     1,
+     0.25
+    ],
+    [
+     2,
+     0.25
+    ],
+    [
+     3,
+     0.25
+    ],
+    [
+     4,
+     0.25
+    ]
+   ],
+   "tm1": [
+    [
+     1,
+     0.25
+    ],
+    [
+     2,
+     0.25
+    ],
+    [
+     3,
+     0.25
+    ],
+    [
+     4,
+     0.25
+    ]
+   ],
+   "et": [
+    [
+     5,
+     0.5
+    ],
+    [
+     6,
+     0.5
+    ]
+   ],
+   "sf": [
+    [
+     5,
+     1
+    ]
+   ],
+   "lf": [
+    [
+     6,
+     0.32
+    ],
+    [
+     7,
+     0.34
+    ],
+    [
+     8,
+     0.34
+    ]
+   ],
+   "tm2": [
+    [
+     7,
+     0.33
+    ],
+    [
+     8,
+     0.33
+    ],
+    [
+     9,
+     0.34
+    ]
+   ],
+   "num": [
+    [
+     9,
+     0.5
+    ],
+    [
+     10,
+     0.5
+    ]
+   ],
+   "mathe2": [
+    [
+     10,
+     0.31
+    ],
+    [
+     11,
+     0.33
+    ],
+    [
+     12,
+     0.36
+    ]
+   ]
+  },
+  "info": "12 Wochen, 24.–27.12. frei · Mo–Fr gut 4 h neuer Stoff"
+ },
+ {
+  "id": "ohne-m1-tm1",
+  "name": "Ohne Mathe 1 & TM 1",
+  "short": "Ohne M1/TM1",
+  "start": "2026-10-12",
+  "end": "2026-12-31",
+  "subjects": [
+   "et",
+   "sf",
+   "tm2",
+   "lf",
+   "num",
+   "mathe2"
+  ],
+  "info": "12 Wochen, 24.–27.12. frei · Mathe 1 und TM 1 ausgeblendet · Mo–Fr knapp 3 h neuer Stoff",
+  "alloc": {
+   "et": [
+    [
+     1,
+     0.34
+    ],
+    [
+     2,
+     0.33
+    ],
+    [
+     3,
+     0.33
+    ]
+   ],
+   "lf": [
+    [
+     1,
+     0.25
+    ],
+    [
+     2,
+     0.25
+    ],
+    [
+     3,
+     0.25
+    ],
+    [
+     4,
+     0.25
+    ]
+   ],
+   "tm2": [
+    [
+     4,
+     0.25
+    ],
+    [
+     5,
+     0.25
+    ],
+    [
+     6,
+     0.25
+    ],
+    [
+     7,
+     0.25
+    ]
+   ],
+   "sf": [
+    [
+     5,
+     0.5
+    ],
+    [
+     6,
+     0.5
+    ]
+   ],
+   "num": [
+    [
+     7,
+     0.34
+    ],
+    [
+     8,
+     0.33
+    ],
+    [
+     9,
+     0.33
+    ]
+   ],
+   "mathe2": [
+    [
+     8,
+     0.2
+    ],
+    [
+     9,
+     0.2
+    ],
+    [
+     10,
+     0.3
+    ],
+    [
+     11,
+     0.15
+    ],
+    [
+     12,
+     0.15
+    ]
+   ]
+  },
+  "weeks": [
+   {
+    "n": 1,
+    "from": "2026-10-12",
+    "to": "2026-10-18",
+    "phase": "Elektrotechnik & Bauelemente",
+    "haupt": "et",
+    "neben": "lf",
+    "note": "Start! Mathe 1 und TM 1 sind in diesem Plan ausgeblendet – wechsle oben im Menü „Lernplan“, falls du sie doch brauchst."
+   },
+   {
+    "n": 2,
+    "from": "2026-10-19",
+    "to": "2026-10-25",
+    "phase": "Elektrotechnik & Bauelemente",
+    "haupt": "et",
+    "neben": "lf"
+   },
+   {
+    "n": 3,
+    "from": "2026-10-26",
+    "to": "2026-11-01",
+    "phase": "Elektrotechnik & Bauelemente",
+    "haupt": "et",
+    "neben": "lf",
+    "note": "Elektrotechnik wird abgeschlossen."
+   },
+   {
+    "n": 4,
+    "from": "2026-11-02",
+    "to": "2026-11-08",
+    "phase": "Elastostatik & Bauelemente",
+    "haupt": "tm2",
+    "neben": "lf",
+    "note": "TM 2 startet, Bauelemente wird abgeschlossen."
+   },
+   {
+    "n": 5,
+    "from": "2026-11-09",
+    "to": "2026-11-15",
+    "phase": "Elastostatik & Fertigung",
+    "haupt": "tm2",
+    "neben": "sf",
+    "note": "Spanlose Fertigung: noch Platzhalter – sobald dein Skript im Ordner liegt, werden daraus Lektionen."
+   },
+   {
+    "n": 6,
+    "from": "2026-11-16",
+    "to": "2026-11-22",
+    "phase": "Elastostatik & Fertigung",
+    "haupt": "tm2",
+    "neben": "sf",
+    "note": "Biegung ist das größte Kapitel der Elastostatik."
+   },
+   {
+    "n": 7,
+    "from": "2026-11-23",
+    "to": "2026-11-29",
+    "phase": "Elastostatik & Numerik",
+    "haupt": "tm2",
+    "neben": "num",
+    "note": "TM 2 wird abgeschlossen, Numerik startet."
+   },
+   {
+    "n": 8,
+    "from": "2026-11-30",
+    "to": "2026-12-06",
+    "phase": "Numerik & Mathe 2",
+    "haupt": "num",
+    "neben": "mathe2",
+    "note": "Mathe 2 startet."
+   },
+   {
+    "n": 9,
+    "from": "2026-12-07",
+    "to": "2026-12-13",
+    "phase": "Numerik & Mathe 2",
+    "haupt": "mathe2",
+    "neben": "num",
+    "note": "Numerik wird abgeschlossen."
+   },
+   {
+    "n": 10,
+    "from": "2026-12-14",
+    "to": "2026-12-20",
+    "phase": "Mathe 2",
+    "haupt": "mathe2",
+    "neben": null,
+    "note": "Kurvenintegrale, Vektoranalysis, Bereichsintegrale."
+   },
+   {
+    "n": 11,
+    "from": "2026-12-21",
+    "to": "2026-12-27",
+    "phase": "Mathe 2",
+    "haupt": "mathe2",
+    "neben": null,
+    "note": "Nur Mo–Mi (21.–23.12.), 24.–27.12. frei."
+   },
+   {
+    "n": 12,
+    "from": "2026-12-28",
+    "to": "2026-12-31",
+    "phase": "Finale Mathe 2",
+    "haupt": "mathe2",
+    "neben": null,
+    "note": "28.–30.12. letzte DGL-Lektionen, 31.12. Rückblick über alle Fächer mit den Karteikarten."
+   }
+  ]
+ }
+]
