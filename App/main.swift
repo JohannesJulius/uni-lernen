@@ -88,7 +88,7 @@ enum APIKeyStore {
 
 /// Die Web-Oberfläche baut den Request-Body (Modell, System-Prompt mit der Lektion, Verlauf);
 /// hier kommen nur Schlüssel und Header dazu. Jedes SSE-Ereignis wird unverändert an JS weitergereicht.
-final class ClaudeChat {
+final class ClaudeChat: @unchecked Sendable {
     private var tasks: [String: Task<Void, Never>] = [:]
     weak var webView: WKWebView?
 
@@ -104,10 +104,11 @@ final class ClaudeChat {
         req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
         if !betas.isEmpty { req.setValue(betas.joined(separator: ","), forHTTPHeaderField: "anthropic-beta") }
         req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        let request = req
 
-        tasks[id] = Task { [weak self] in
+        tasks[id] = Task { [weak self, request] in
             do {
-                let (bytes, response) = try await URLSession.shared.bytes(for: req)
+                let (bytes, response) = try await URLSession.shared.bytes(for: request)
                 let status = (response as? HTTPURLResponse)?.statusCode ?? 0
                 if status != 200 {
                     var text = ""
@@ -131,11 +132,12 @@ final class ClaudeChat {
                     await self?.emitMain(id, "error", ["message": error.localizedDescription])
                 }
             }
-            await MainActor.run { self?.tasks[id] = nil }
+            await self?.clearTask(id)
         }
     }
 
     func cancel(id: String) { tasks[id]?.cancel() }
+    @MainActor private func clearTask(_ id: String) { tasks[id] = nil }
 
     @MainActor private func emitRawMain(_ id: String, _ json: String) {
         webView?.evaluateJavaScript("window.onChatEvent && window.onChatEvent(\(jsString(id)), \(json))")
