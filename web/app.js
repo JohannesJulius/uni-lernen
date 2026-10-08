@@ -18,7 +18,8 @@ window.onMaterials = m => { materials = m; route(); };
 // ---------- Lektionen nachladen ----------
 const HTML = {};
 const pending = {};
-window.__lesson = (id, html) => { HTML[id] = html; (pending[id] || []).forEach(f => f()); delete pending[id]; };
+const SRC = {};
+window.__lesson = (id, html, src) => { HTML[id] = html; if (src) SRC[id] = src; (pending[id] || []).forEach(f => f()); delete pending[id]; };
 function loadLesson(id, cb) {
   if (HTML[id]) return cb();
   if (pending[id]) { pending[id].push(cb); return; }

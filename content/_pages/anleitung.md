@@ -29,6 +29,14 @@ Der Vollplan ist straff. Wenn du vor dem Start (bis 11.10.) Zeit hast, fang scho
 5. Lektion als **gelernt** und **Aufgaben gerechnet** markieren.
 6. Eigene Notizen ins Notizfeld – wird automatisch gespeichert.
 
+## Claude fragen
+
+Unten rechts **„✦ Frag Claude"** (oder **⌘J**) öffnet den Chat. Claude kennt die Lektion, die du gerade offen hast – komplett mit Formeln, Beispielen und Aufgaben. Jede Lektion hat ihren eigenen Chat; **＋** startet ihn neu.
+
+- **Einrichten:** Über **⋯** deinen API-Schlüssel von console.anthropic.com einfügen (wird im macOS-Schlüsselbund gespeichert). Eine Frage kostet je nach Lektion und Modell grob 1–5 Cent.
+- **Ohne Schlüssel:** „In claude.ai öffnen" startet einen neuen Chat in deinem normalen claude.ai-Konto, mit Lektion und Frage schon eingetragen.
+- Tipp: Bei Übungsaufgaben gibt Claude zuerst nur einen Hinweis – frag nach der vollständigen Lösung, wenn du sie willst.
+
 ## Karteikarten (Wiederholung)
 
 Unter **Karteikarten** wiederholst du alle Karten nach dem Leitner-Prinzip: Leertaste = Antwort zeigen, **1** = nicht gewusst … **4** = sicher. Was du nicht wusstest, kommt bald wieder. Am besten täglich 10–15 Minuten, besonders am Übungssamstag.

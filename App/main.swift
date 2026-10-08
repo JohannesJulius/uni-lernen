@@ -1,6 +1,7 @@
 import Cocoa
 import WebKit
 import PDFKit
+import Security
 
 // MARK: - Pfade
 
@@ -53,6 +54,104 @@ func scanMaterials() -> [String: [String]] {
     return result
 }
 
+// MARK: - Claude-API-Schlüssel (macOS-Schlüsselbund)
+
+enum APIKeyStore {
+    static let service = "de.johannes.unilernen.anthropic"
+    static let account = "api-key"
+
+    static func read() -> String? {
+        let q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
+                                kSecAttrAccount as String: account, kSecReturnData as String: true,
+                                kSecMatchLimit as String: kSecMatchLimitOne]
+        var out: AnyObject?
+        guard SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess, let d = out as? Data else { return nil }
+        return String(data: d, encoding: .utf8)
+    }
+
+    @discardableResult static func save(_ key: String) -> Bool {
+        delete()
+        let q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
+                                kSecAttrAccount as String: account, kSecValueData as String: Data(key.utf8),
+                                kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked]
+        return SecItemAdd(q as CFDictionary, nil) == errSecSuccess
+    }
+
+    static func delete() {
+        let q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
+                                kSecAttrAccount as String: account]
+        SecItemDelete(q as CFDictionary)
+    }
+}
+
+// MARK: - Claude-Chat (Messages API, Streaming per Server-Sent Events)
+
+/// Die Web-Oberfläche baut den Request-Body (Modell, System-Prompt mit der Lektion, Verlauf);
+/// hier kommen nur Schlüssel und Header dazu. Jedes SSE-Ereignis wird unverändert an JS weitergereicht.
+final class ClaudeChat {
+    private var tasks: [String: Task<Void, Never>] = [:]
+    weak var webView: WKWebView?
+
+    func send(id: String, body: [String: Any], betas: [String]) {
+        guard let key = APIKeyStore.read(), !key.isEmpty else {
+            emit(id, "error", ["message": "Kein API-Schlüssel hinterlegt."]); return
+        }
+        var req = URLRequest(url: URL(string: "https://api.anthropic.com/v1/messages")!)
+        req.httpMethod = "POST"
+        req.timeoutInterval = 600
+        req.setValue("application/json", forHTTPHeaderField: "content-type")
+        req.setValue(key, forHTTPHeaderField: "x-api-key")
+        req.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        if !betas.isEmpty { req.setValue(betas.joined(separator: ","), forHTTPHeaderField: "anthropic-beta") }
+        req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        tasks[id] = Task { [weak self] in
+            do {
+                let (bytes, response) = try await URLSession.shared.bytes(for: req)
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                if status != 200 {
+                    var text = ""
+                    for try await line in bytes.lines { text += line }
+                    var msg = "HTTP \(status)"
+                    if let d = text.data(using: .utf8), let j = try? JSONSerialization.jsonObject(with: d) as? [String: Any],
+                       let e = j["error"] as? [String: Any], let m = e["message"] as? String { msg += ": " + m }
+                    await self?.emitMain(id, "error", ["message": msg, "status": status]); return
+                }
+                for try await line in bytes.lines {
+                    if Task.isCancelled { break }
+                    guard line.hasPrefix("data:") else { continue }
+                    let json = line.dropFirst(5).trimmingCharacters(in: .whitespaces)
+                    await self?.emitRawMain(id, json)
+                }
+                await self?.emitMain(id, "done", [:])
+            } catch {
+                if (error as? URLError)?.code == .cancelled || Task.isCancelled {
+                    await self?.emitMain(id, "done", ["cancelled": true])
+                } else {
+                    await self?.emitMain(id, "error", ["message": error.localizedDescription])
+                }
+            }
+            await MainActor.run { self?.tasks[id] = nil }
+        }
+    }
+
+    func cancel(id: String) { tasks[id]?.cancel() }
+
+    @MainActor private func emitRawMain(_ id: String, _ json: String) {
+        webView?.evaluateJavaScript("window.onChatEvent && window.onChatEvent(\(jsString(id)), \(json))")
+    }
+    @MainActor private func emitMain(_ id: String, _ type: String, _ extra: [String: Any]) { emit(id, type, extra) }
+    private func emit(_ id: String, _ type: String, _ extra: [String: Any]) {
+        var obj = extra; obj["type"] = "app_" + type
+        let json = (try? JSONSerialization.data(withJSONObject: obj)).flatMap { String(data: $0, encoding: .utf8) } ?? "{}"
+        webView?.evaluateJavaScript("window.onChatEvent && window.onChatEvent(\(jsString(id)), \(json))")
+    }
+    private func jsString(_ s: String) -> String {
+        let d = try! JSONSerialization.data(withJSONObject: [s]); let a = String(data: d, encoding: .utf8)!
+        return String(a.dropFirst().dropLast())
+    }
+}
+
 // MARK: - PDF-Fenster
 
 final class PDFWindowController: NSWindowController, NSWindowDelegate {
@@ -93,6 +192,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
     var currentPlan = ""
     let planMenu = NSMenu(title: "Lernplan")
     var userContent: WKUserContentController!
+    let chat = ClaudeChat()
 
     /// Startskript mit dem aktuellen Fortschritt – wird nach jedem Speichern erneuert,
     /// damit ein Neuladen (z. B. beim Planwechsel) den neuesten Stand sieht.
@@ -102,7 +202,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
             stateJSON = s
         }
         let materials = (try? JSONSerialization.data(withJSONObject: scanMaterials())).flatMap { String(data: $0, encoding: .utf8) } ?? "{}"
-        let boot = "window.__NATIVE__ = true; window.__STATE__ = \(stateJSON); window.__MATERIALS__ = \(materials);"
+        let hasKey = (APIKeyStore.read()?.isEmpty == false) ? "true" : "false"
+        let boot = "window.__NATIVE__ = true; window.__HAS_API_KEY__ = \(hasKey); window.__STATE__ = \(stateJSON); window.__MATERIALS__ = \(materials);"
         userContent.removeAllUserScripts()
         userContent.addUserScript(WKUserScript(source: boot, injectionTime: .atDocumentStart, forMainFrameOnly: true))
     }
@@ -120,6 +221,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
 
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
+        chat.webView = webView
         webView.setValue(false, forKey: "drawsBackground")
 
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
@@ -173,6 +275,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
         case "rescan":
             let materials = (try? JSONSerialization.data(withJSONObject: scanMaterials())).flatMap { String(data: $0, encoding: .utf8) } ?? "{}"
             webView.evaluateJavaScript("window.onMaterials && window.onMaterials(\(materials))")
+        case "chatSend":
+            guard let id = body["id"] as? String, let req = body["body"] as? [String: Any] else { return }
+            chat.send(id: id, body: req, betas: (body["betas"] as? [String]) ?? [])
+        case "chatCancel":
+            if let id = body["id"] as? String { chat.cancel(id: id) }
+        case "setApiKey":
+            let key = ((body["key"] as? String) ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            let ok = key.isEmpty ? { APIKeyStore.delete(); return true }() : APIKeyStore.save(key)
+            installBootScript()
+            webView.evaluateJavaScript("window.onApiKeyChanged && window.onApiKeyChanged(\(ok && !key.isEmpty), \(ok))")
+        case "openURL":
+            if let s = body["url"] as? String, let url = URL(string: s), ["https"].contains(url.scheme ?? "") {
+                NSWorkspace.shared.open(url)
+            }
         case "plans":
             planList = (body["plans"] as? [[String: String]]) ?? []
             currentPlan = (body["current"] as? String) ?? ""

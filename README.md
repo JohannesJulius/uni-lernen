@@ -22,6 +22,13 @@ Im Menü **Lernplan** (oder oben in der Seitenleiste) umschalten:
 
 Der Fortschritt bleibt beim Wechseln erhalten, nur die Verteilung auf die Wochen ändert sich.
 
+## Claude-Chat zu jeder Lektion
+
+Unten rechts **„✦ Frag Claude"** (oder ⌘J) öffnet eine Chat-Leiste. Claude bekommt die komplette aktuelle Lektion als Kontext (Text, Formeln, Beispiele, Aufgaben) und weiß, wo du gerade bist; jede Lektion hat ihren eigenen Chat-Verlauf.
+
+- **Im App-Chat:** läuft über die Claude-API mit deinem eigenen API-Schlüssel (anlegen auf [console.anthropic.com](https://console.anthropic.com/settings/keys), in der App unter ⋯ einfügen). Der Schlüssel liegt nur im macOS-Schlüsselbund. Standardmodell ist Claude Opus 5.5; Sonnet 5.5 und Haiku 5.5 sind günstiger wählbar. Abrechnung über dein API-Guthaben – ein claude.ai-Abo gilt dafür nicht.
+- **„In claude.ai öffnen":** startet einen neuen Chat in deinem normalen claude.ai-Konto, mit Lektion, Lernzielen und deiner Frage schon eingetragen – ganz ohne API-Schlüssel.
+
 ## Download und Installation
 
 1. Unter **Releases** (rechts auf der Repository-Seite) die neueste `Uni-Lernen-macOS.zip` herunterladen und entpacken.

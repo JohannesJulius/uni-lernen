@@ -118,7 +118,7 @@ for (const sub of subjects) {
     lessons.push({
       id, subject: sub.id, title: meta.title || f, chapter: meta.chapter || '', weeks: {},
       minutes: meta.minutes ? parseInt(meta.minutes, 10) : null, kind: meta.kind || 'lesson', sources, html,
-      cards: cards.map(c => c.id), text: text.slice(0, 20000),
+      cards: cards.map(c => c.id), text: text.slice(0, 20000), source: body.trim(),
     });
     for (const c of cards) allCards.push({ ...c, subject: sub.id, lesson: id });
   }
@@ -155,18 +155,22 @@ fs.rmSync(LDIR, { recursive: true, force: true });
 fs.mkdirSync(LDIR, { recursive: true });
 let total = 0;
 for (const l of lessons) {
-  const js = `window.__lesson(${JSON.stringify(l.id)}, ${JSON.stringify(l.html)});`;
+  // Markdown-Quelltext kommt mit, damit der Claude-Chat die ganze Lektion als Kontext bekommt
+  const js = `window.__lesson(${JSON.stringify(l.id)}, ${JSON.stringify(l.html)}, ${JSON.stringify(l.source)});`;
   total += js.length;
   fs.writeFileSync(path.join(LDIR, `${l.id}.js`), js);
-  delete l.html;
+  delete l.html; delete l.source;
 }
-const out = `window.CONTENT = ${JSON.stringify({ subjects, plans, lessons, cards: allCards, pages: extraPages, built: new Date().toISOString(), ver: Date.now().toString(36) })};`;
+const out = `window.CONTENT = ${JSON.stringify({ macros: MACROS, subjects, plans, lessons, cards: allCards, pages: extraPages, built: new Date().toISOString(), ver: Date.now().toString(36) })};`;
 fs.writeFileSync(path.join(ROOT, 'web', 'content.js'), out);
+// Browser-Builds von marked und KaTeX für die Chat-Antworten
+fs.copyFileSync(path.join(ROOT, 'node_modules/marked/lib/marked.umd.js'), path.join(ROOT, 'web/vendor/marked.umd.js'));
+fs.copyFileSync(path.join(ROOT, 'node_modules/katex/dist/katex.min.js'), path.join(ROOT, 'web/vendor/katex.min.js'));
 // Cache-Busting: Versionsstempel in index.html eintragen
 const ver = Date.now().toString(36);
 const idxPath = path.join(ROOT, 'web', 'index.html');
 let idx = fs.readFileSync(idxPath, 'utf8');
-idx = idx.replace(/(src|href)="(content\.js|app\.js|style\.css)(\?v=[^"]*)?"/g, (_, a, f) => `${a}="${f}?v=${ver}"`);
+idx = idx.replace(/(src|href)="(content\.js|app\.js|chat\.js|style\.css)(\?v=[^"]*)?"/g, (_, a, f) => `${a}="${f}?v=${ver}"`);
 fs.writeFileSync(idxPath, idx);
 console.log(`Lektionsdateien: ${(total / 1e6).toFixed(2)} MB`);
 console.log(`${lessons.length} Lektionen, ${allCards.length} Karteikarten, ${(out.length / 1e6).toFixed(2)} MB`);
