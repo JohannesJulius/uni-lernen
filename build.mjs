@@ -149,6 +149,30 @@ if (fs.existsSync(pagesDir)) {
   }
 }
 
+// Projektwissen für das claude.ai-Projekt „Uni Lernen": eine Markdown-Datei pro Fach
+const PDIR = path.join(ROOT, 'claude-projekt');
+fs.rmSync(PDIR, { recursive: true, force: true });
+fs.mkdirSync(PDIR, { recursive: true });
+for (const sub of subjects) {
+  const ls = lessons.filter(l => l.subject === sub.id && l.kind !== 'placeholder');
+  if (!ls.length) continue;
+  const parts = ls.map(l => `\n\n---\n\n# Lektion: ${l.title}\n*Fach: ${sub.name} · ${l.chapter || ''}*\n\n${l.source.replace(/:::karte[\s\S]*?\n:::/g, '')}`);
+  fs.writeFileSync(path.join(PDIR, `${sub.id}-${sub.name.replace(/[^\wäöüÄÖÜß]+/g, '-').replace(/-+$/,'')}.md`),
+    `# ${sub.name} – ${sub.long}\n\nAlle ${ls.length} Lektionen der Lern-App „Uni Lernen". Blöcke wie :::def, :::satz, :::bsp, :::merke, :::achtung, :::formel sind Kästen; :::aufgabe enthält eine Übungsaufgabe mit :::loesung.${parts.join('')}\n`);
+}
+
+fs.writeFileSync(path.join(PDIR, 'Projekt-Anweisungen.txt'), `Du bist mein Tutor für mein Studium der Luft- und Raumfahrttechnik an der Hochschule München (Wintersemester 2026). Ich lerne mit meiner Lern-App „Uni Lernen"; im Projektwissen liegen alle Lektionen, nach Fächern sortiert: ${subjects.filter(s => !s.placeholder).map(s => s.name).join(', ')}.
+
+Wenn ich schreibe, in welcher Lektion ich gerade bin, dann such diese Lektion im Projektwissen und beziehe dich darauf: gleiche Bezeichnungen, gleiche Formelzeichen, gleiche Beispiele.
+
+So antwortest du:
+- Auf Deutsch, per du, Schritt für Schritt und ohne Vorwissen vorauszusetzen, aber knapp und klar gegliedert.
+- Formeln in LaTeX.
+- Bei Übungsaufgaben aus den Lektionen zuerst nur einen Hinweis oder Ansatz; die vollständige Lösung erst, wenn ich danach frage.
+- Wenn dir in einer Lektion etwas falsch vorkommt, sag es offen und begründe es.
+- Wenn eine Frage über die Lektion hinausgeht, beantworte sie trotzdem und sag, in welchem Fach bzw. welcher Lektion das Thema vorkommt.
+`);
+
 // Lektions-HTML einzeln ablegen (wird bei Bedarf nachgeladen)
 const LDIR = path.join(ROOT, 'web', 'lessons');
 fs.rmSync(LDIR, { recursive: true, force: true });
@@ -161,11 +185,8 @@ for (const l of lessons) {
   fs.writeFileSync(path.join(LDIR, `${l.id}.js`), js);
   delete l.html; delete l.source;
 }
-const out = `window.CONTENT = ${JSON.stringify({ macros: MACROS, subjects, plans, lessons, cards: allCards, pages: extraPages, built: new Date().toISOString(), ver: Date.now().toString(36) })};`;
+const out = `window.CONTENT = ${JSON.stringify({ subjects, plans, lessons, cards: allCards, pages: extraPages, built: new Date().toISOString(), ver: Date.now().toString(36) })};`;
 fs.writeFileSync(path.join(ROOT, 'web', 'content.js'), out);
-// Browser-Builds von marked und KaTeX für die Chat-Antworten
-fs.copyFileSync(path.join(ROOT, 'node_modules/marked/lib/marked.umd.js'), path.join(ROOT, 'web/vendor/marked.umd.js'));
-fs.copyFileSync(path.join(ROOT, 'node_modules/katex/dist/katex.min.js'), path.join(ROOT, 'web/vendor/katex.min.js'));
 // Cache-Busting: Versionsstempel in index.html eintragen
 const ver = Date.now().toString(36);
 const idxPath = path.join(ROOT, 'web', 'index.html');

@@ -15,6 +15,7 @@ done
 lipo -create -output "$TMP/Uni Lernen.app/Contents/MacOS/UniLernen" "$TMP/UniLernen-arm64" "$TMP/UniLernen-x86_64"
 rm "$TMP/UniLernen-arm64" "$TMP/UniLernen-x86_64"
 cp -R web "$TMP/Uni Lernen.app/Contents/Resources/web"
+cp -R claude-projekt "$TMP/Uni Lernen.app/Contents/Resources/claude-projekt"
 [ -f App/AppIcon.icns ] && cp App/AppIcon.icns "$TMP/Uni Lernen.app/Contents/Resources/"
 cat > "$TMP/Uni Lernen.app/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

@@ -22,12 +22,16 @@ Im Menü **Lernplan** (oder oben in der Seitenleiste) umschalten:
 
 Der Fortschritt bleibt beim Wechseln erhalten, nur die Verteilung auf die Wochen ändert sich.
 
-## Claude-Chat zu jeder Lektion
+## Claude in der App (ohne API-Kosten)
 
-Unten rechts **„✦ Frag Claude"** (oder ⌘J) öffnet eine Chat-Leiste. Claude bekommt die komplette aktuelle Lektion als Kontext (Text, Formeln, Beispiele, Aufgaben) und weiß, wo du gerade bist; jede Lektion hat ihren eigenen Chat-Verlauf.
+**„✦ Frag Claude"** (unten rechts) bzw. **⌘J** blendet rechts claude.ai ein – mit deinem normalen Claude-Konto (Free/Pro), einmal anmelden genügt. Jede neue Frage startet mit der aktuellen Lektion schon im Eingabefeld (zusätzlich in der Zwischenablage, falls das Feld leer bleibt: ⌘V).
 
-- **Im App-Chat:** läuft über die Claude-API mit deinem eigenen API-Schlüssel (anlegen auf [console.anthropic.com](https://console.anthropic.com/settings/keys), in der App unter ⋯ einfügen). Der Schlüssel liegt nur im macOS-Schlüsselbund. Standardmodell ist Claude Opus 5.5; Sonnet 5.5 und Haiku 5.5 sind günstiger wählbar. Abrechnung über dein API-Guthaben – ein claude.ai-Abo gilt dafür nicht.
-- **„In claude.ai öffnen":** startet einen neuen Chat in deinem normalen claude.ai-Konto, mit Lektion, Lernzielen und deiner Frage schon eingetragen – ganz ohne API-Schlüssel.
+**Empfohlen: claude.ai-Projekt mit allen Lektionen**
+1. In der Claude-Leiste links **Projekte → Neues Projekt**, Name z. B. „Uni Lernen".
+2. Den Text aus `Projekt-Anweisungen.txt` als Projekt-Anweisungen einfügen und die Fach-Dateien (`*.md`) als Projektwissen hochladen – beides unter Menü **Claude → Dateien fürs Projekt im Finder zeigen**.
+3. Im geöffneten Projekt Menü **Claude → Offenes Projekt für neue Fragen verwenden**.
+
+Ab dann starten alle Fragen in diesem Projekt; Claude kennt alle Lektionen aller Fächer.
 
 ## Download und Installation
 

@@ -31,11 +31,9 @@ Der Vollplan ist straff. Wenn du vor dem Start (bis 11.10.) Zeit hast, fang scho
 
 ## Claude fragen
 
-Unten rechts **„✦ Frag Claude"** (oder **⌘J**) öffnet den Chat. Claude kennt die Lektion, die du gerade offen hast – komplett mit Formeln, Beispielen und Aufgaben. Jede Lektion hat ihren eigenen Chat; **＋** startet ihn neu.
+**„✦ Frag Claude"** (unten rechts) oder **⌘J** blendet rechts **claude.ai** ein – mit deinem normalen Claude-Konto, ohne API-Kosten. Einmal anmelden (am besten „Continue with email"), dann bleibt die Anmeldung gespeichert. Jede neue Frage startet mit der aktuellen Lektion schon im Eingabefeld; du schreibst nur noch deine Frage dahinter. (Bleibt das Feld leer: ⌘V – der Text liegt auch in der Zwischenablage.)
 
-- **Einrichten:** Über **⋯** deinen API-Schlüssel von console.anthropic.com einfügen (wird im macOS-Schlüsselbund gespeichert). Eine Frage kostet je nach Lektion und Modell grob 1–5 Cent.
-- **Ohne Schlüssel:** „In claude.ai öffnen" startet einen neuen Chat in deinem normalen claude.ai-Konto, mit Lektion und Frage schon eingetragen.
-- Tipp: Bei Übungsaufgaben gibt Claude zuerst nur einen Hinweis – frag nach der vollständigen Lösung, wenn du sie willst.
+**Einmalig einrichten – Projekt „Uni Lernen":** In der Claude-Leiste ein Projekt anlegen, als Anweisungen den Text aus *Projekt-Anweisungen.txt* einfügen und die Fach-Dateien hochladen (Menü **Claude → Dateien fürs Projekt im Finder zeigen**). Dann im geöffneten Projekt **Claude → Offenes Projekt für neue Fragen verwenden**. Ab dann kennt Claude in jeder Frage alle Lektionen aller Fächer.
 
 ## Karteikarten (Wiederholung)
 

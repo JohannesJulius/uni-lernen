@@ -4,5 +4,4 @@ dist/
 # wird von build.mjs aus content/ erzeugt
 web/content.js
 web/lessons/
-web/vendor/marked.umd.js
-web/vendor/katex.min.js
+claude-projekt/
